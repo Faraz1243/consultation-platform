@@ -17,14 +17,54 @@ import Partners from './pages/Partners'
 import CustomerReviews from './pages/CustomerDashboard/Reviews'
 import NotFound from './pages/404'
 import ConsultantDashboard from './pages/ConsultantDashboard/Dashboard'
+import ConsultantBookings from './pages/ConsultantDashboard/Bookings'
+import ConsultantCustomers from './pages/ConsultantDashboard/Customers'
+import ConsultantPayouts from './pages/ConsultantDashboard/Payout'
+import ConsultantHolidays from './pages/ConsultantDashboard/Holidays'
+import ConsultantReviews from './pages/ConsultantDashboard/Reviews'
+import ConsultantEarnings from './pages/ConsultantDashboard/Earnings'
+import ConsultantSettings from './pages/ConsultantDashboard/Settings'
+import ConsultantOffers from './pages/ConsultantDashboard/Offers'
 
 
 
 const routes =  
   [    
     {
-      path:"/",
+      path:"/consultant/dashboard",
       element:<ConsultantDashboard/>
+    },
+    {
+      path:"/consultant/bookings",
+      element:<ConsultantBookings/>
+    },
+    {
+      path:"/consultant/customers",
+      element:<ConsultantCustomers/>
+    },
+    {
+      path:"/consultant/payouts",
+      element:<ConsultantPayouts/>
+    },
+    {
+      path:"/consultant/holidays",
+      element:<ConsultantHolidays/>
+    },
+    {
+      path:"/consultant/offers",
+      element:<ConsultantOffers/>
+    },
+    {
+      path:"/consultant/reviews",
+      element:<ConsultantReviews/>
+    },
+    {
+      path:"/consultant/earnings",
+      element:<ConsultantEarnings/>
+    },
+    {
+      path:"/consultant/settings",
+      element:<ConsultantSettings/>
     },
 
 
@@ -43,10 +83,10 @@ const routes =
       path:"*",
       element:<NotFound/>
     },
-    // {
-    //   path:"/",
-    //   element:<HomePage/>
-    // },
+    {
+      path:"/",
+      element:<HomePage/>
+    },
     {
       path:"/about",
       element:<About/>

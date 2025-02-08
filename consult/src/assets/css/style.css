@@ -6035,6 +6035,27 @@ Form help
   transition: all 0.2s ease;
   color: #0ae6c1;
 }
+a li {
+  color: #242B3A;
+  font-weight: 460;
+  font-size: 14.5px;
+  border-bottom-width: 2px;
+  margin: 20px 8px; /* remove this */
+
+}
+a li.active {
+  border-color: transparent;
+  border-bottom-color: #0ae6c1;
+  background-color: transparent;
+  -webkit-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  color: #0ae6c1;
+  font-weight: 500;
+}
+a li:hover {
+  font-size: 16px;;
+}
 
 .nav-tabs .nav-tabs-solid {
   background-color: #FFF;
