@@ -6,7 +6,8 @@ export class ConsultantSidepane extends Component {
     return (
         <>
         {/* Sidebar */}
-        <div className="sidebar" id="sidebar">
+        <div className="sidebar" id="sidebar" >
+        {/* <div className="sidebar" id="sidebar" style={{ display: 'flex', alignItems: 'center' }}> */}
           <div className="sidebar-inner slimscroll"  style={{ maxHeight: '100vh', overflowY: 'auto' }}>
             <div id="sidebar-menu" className="sidebar-menu">
               <ul>
@@ -26,14 +27,6 @@ export class ConsultantSidepane extends Component {
                     </li>
                   )}
                 </NavLink>
-                <NavLink to="/consultant/customers">
-                  {({ isActive }) => (
-                    <li className={isActive ? "active" : ""}>
-                      <i className="ti ti-layout-grid" />
-                      <span>Customers </span>
-                    </li>
-                  )}
-                </NavLink>
                 <NavLink to="/consultant/payouts">
                   {({ isActive }) => (
                     <li className={isActive ? "active" : ""}>
@@ -47,14 +40,6 @@ export class ConsultantSidepane extends Component {
                     <li className={isActive ? "active" : ""}>
                       <i className="ti ti-layout-grid" />
                       <span>Holidays</span>
-                    </li>
-                  )}
-                </NavLink>
-                <NavLink to="/consultant/offers">
-                  {({ isActive }) => (
-                    <li className={isActive ? "active" : ""}>
-                      <i className="ti ti-layout-grid" />
-                      <span>Offers</span>
                     </li>
                   )}
                 </NavLink>
@@ -90,6 +75,8 @@ export class ConsultantSidepane extends Component {
                     </li>
                   )}
                 </NavLink>
+                <span/>
+                <span/>
               </ul>
             </div>
           </div>
