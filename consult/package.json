@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "setup-python": "pip install flask qdrant-client openai sentence-transformers flask-cors && python app.py",
+    "setup-python": "pip install flask qdrant-client openai sentence-transformers flask-cors python-dotenv && python app.py",
     "python": "python app.py",
     "dev": "vite",
     "build": "tsc -b && vite build",

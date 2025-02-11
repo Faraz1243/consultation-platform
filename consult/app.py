@@ -1,8 +1,13 @@
+import os
 from flask import Flask, request, jsonify
-from flask_cors import CORS  # Import CORS
+from flask_cors import CORS
 from qdrant_client import QdrantClient
 from openai import OpenAI
 from sentence_transformers import SentenceTransformer
+from dotenv import load_dotenv  # Import dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 def get_sentenceTF_embeddings(sentences):
     model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -28,15 +33,20 @@ def custom_prompt(query, results):
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Initialize clients
-qdrant_client = QdrantClient(url="https://d183d387-aa1e-46ca-b18e-39f1c725bcb0.europe-west3-0.gcp.cloud.qdrant.io", api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIiwiZXhwIjoxNzQ2Mjc0MTgwfQ.w7L5LjcRhrijJzx5ZKyBqsNszJyeUF_nCCgJ0bjvOK4")
-nim_client = OpenAI(base_url='https://integrate.api.nvidia.com/v1', api_key="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")
+# Initialize clients using environment variables
+qdrant_client = QdrantClient(
+    url=os.getenv("QDRANT_URL"), 
+    api_key=os.getenv("QDRANT_API_KEY")
+)
+nim_client = OpenAI(
+    base_url=os.getenv("NIM_URL"), 
+    api_key=os.getenv("NIM_API_KEY")
+)
 
 @app.route('/query', methods=['POST'])
 def query():
     data = request.json
     user_query = data.get('query')
-
 
     # Get query embedding
     query_embedding = get_sentenceTF_embeddings([user_query])[0]
