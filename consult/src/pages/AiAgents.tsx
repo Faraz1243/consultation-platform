@@ -4,53 +4,25 @@ import NavBar from '../components/navbar';
 import ChatUserList from '../components/ChatUserList';
 import ChatWindow from '../components/ChatWindow';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+
 export class AiAgents extends Component {
   state = {
     users: [
-      { id: 1, name: 'PharmaBot', avatar: 'https://placehold.co/150x150', active: true },
-      { id: 2, name: 'Tax Consultant', avatar: 'https://placehold.co/150x150', active: false },
-      { id: 3, name: 'Legal Advisor', avatar: 'https://placehold.co/150x150', active: false },
+      { id: 2, name: 'Tax Consultant', avatar: 'https://placehold.co/150x150', active: true },
     ],
+    showChatWindow: false,
     messages: [],
     selectedUser: null,
+    loading: false, // New state to track bot loading
   };
-
-  // WebSocket connection setup
-
-
-  // Use only when you have web-socket url
-
-  // componentDidMount() {
-  //   this.socket = new WebSocket('ws://your-websocket-url');
-
-  //   this.socket.onmessage = (event) => {
-  //     const message = JSON.parse(event.data);
-  //     this.setState((prevState) => ({
-  //       messages: [...prevState.messages, message],
-  //     }));
-  //   };
-
-  //   this.socket.onopen = () => {
-  //     console.log('WebSocket connected');
-  //   };
-
-  //   this.socket.onclose = () => {
-  //     console.log('WebSocket disconnected');
-  //   };
-  // }
-
-
-  // componentWillUnmount() {
-  //   this.socket.close();
-  // }
 
   // Handle user selection
   handleUserClick = (user) => {
-    this.setState({ selectedUser: user });
+    this.setState({ selectedUser: user, showChatWindow: true });
   };
 
   // Handle sending messages
-  handleSendMessage = (message) => {
+  handleSendMessage = async (message) => {
     const newMessage = {
       id: this.state.messages.length + 1,
       text: message,
@@ -58,17 +30,49 @@ export class AiAgents extends Component {
       time: new Date().toLocaleTimeString(),
     };
 
-    // Send the message via WebSocket
-    // this.socket.send(JSON.stringify(newMessage));
-
-    // Update the local state with the new message
+    // Update the local state with the new user message
     this.setState((prevState) => ({
       messages: [...prevState.messages, newMessage],
+      loading: true, // Set loading to true while waiting for the bot's response
     }));
+
+    try {
+      // Send the message to the backend
+      const response = await fetch('http://localhost:5000/query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: message }),
+      });
+
+      const data = await response.json();
+
+      // Add the bot's response to the messages
+      const botMessage = {
+        id: this.state.messages.length + 1,
+        text: data.response,
+        sender: 'bot',
+        time: new Date().toLocaleTimeString(),
+      };
+
+      this.setState((prevState) => ({
+        messages: [...prevState.messages, botMessage],
+        loading: false, // Set loading to false after the bot responds
+      }));
+    } catch (error) {
+      console.error('Error sending message to the backend:', error);
+      this.setState({ loading: false }); // Ensure loading is reset even if there's an error
+    }
+  };
+
+  // Toggle back to user list in mobile view
+  handleBackToUserList = () => {
+    this.setState({ showChatWindow: false });
   };
 
   render() {
-    const { users, messages, selectedUser } = this.state;
+    const { users, messages, selectedUser, showChatWindow, loading } = this.state;
 
     return (
       <div>
@@ -79,7 +83,12 @@ export class AiAgents extends Component {
               <div className="customer-chat">
                 <div className="row chat-window">
                   <ChatUserList users={users} onUserClick={this.handleUserClick} />
-                  <ChatWindow messages={messages} onSendMessage={this.handleSendMessage} />
+                  <ChatWindow
+                    messages={messages}
+                    onSendMessage={this.handleSendMessage}
+                    onBack={this.handleBackToUserList}
+                    loading={loading} // Pass loading state to ChatWindow
+                  />
                 </div>
               </div>
             </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 const ChatUserList = ({ users, onUserClick }) => {
   return (
-    <div className="col-lg-4 chat-cont-left d-flex">
+    <div className="col-lg-4  chat-cont-left d-flex">
       <div className="card mb-3 mb-md-0 flex-fill">
         <div className="chat-header">
           <div className="mb-3">
@@ -37,7 +37,7 @@ const ChatUserList = ({ users, onUserClick }) => {
               <div className="d-flex align-items-center">
                 <div className={`avatar avatar-lg online ${user.active ? 'active' : ''} flex-shrink-0 me-2`}>
                   <img
-                    src={user.avatar}
+                    src='https://placehold.co/150x150'
                     alt="User Image"
                     className="rounded-circle"
                   />

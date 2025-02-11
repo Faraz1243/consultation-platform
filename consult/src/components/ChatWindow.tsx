@@ -1,10 +1,24 @@
 import React from 'react';
+import './ChatWindow.css'; // Import the CSS file
 
-const ChatWindow = ({ messages, onSendMessage }) => {
+const ChatWindow = ({ messages, onSendMessage, onBack, loading }) => {
   const [message, setMessage] = React.useState('');
+  const chatContainerRef = React.useRef(null);
+
+  // Function to scroll to the bottom of the chat container
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
+
+  // Automatically scroll to the bottom whenever messages or loading state changes
+  React.useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
 
   const handleSendMessage = () => {
-    if (message.trim()) {
+    if (message.trim() && !loading) {
       onSendMessage(message);
       setMessage('');
     }
@@ -19,18 +33,19 @@ const ChatWindow = ({ messages, onSendMessage }) => {
               id="back_user_list"
               href="javascript:void(0)"
               className="back-user-list"
+              onClick={onBack}
             >
               <i className="fas fa-chevron-left" />
             </a>
             <div className="avatar avatar-lg online flex-shrink-0 me-2">
               <img
                 className="rounded-circle"
-                src="assets/img/profiles/avatar-01.jpg"
+                src="https://placehold.co/150x150"
                 alt="User"
               />
             </div>
             <div>
-              <h6 className="fs-16 fw-medium mb-1">Pharmacist LLM</h6>
+              <h6 className="fs-16 fw-medium mb-1">Agent</h6>
               <p className="fs-14">Online</p>
             </div>
           </div>
@@ -43,15 +58,15 @@ const ChatWindow = ({ messages, onSendMessage }) => {
             </a>
           </div>
         </div>
-        <div className="card-body msg_card_body chat-scroll pt-0">
+        <div className="card-body msg_card_body chat-scroll pt-0" ref={chatContainerRef}>
           <ul className="list-unstyled">
             {messages.map((msg, index) => (
               <li key={index} className={`media ${msg.sender === 'user' ? 'sent' : 'received'} d-flex align-items-end`}>
                 {msg.sender === 'bot' && (
                   <div className="avatar avatar-lg flex-shrink-0">
                     <img
-                      src="assets/img/profiles/avatar-01.jpg"
-                      alt="User Image"
+                      src="https://placehold.co/150x150"
+                      alt="Bot Avatar"
                       className="rounded-circle"
                     />
                   </div>
@@ -61,10 +76,13 @@ const ChatWindow = ({ messages, onSendMessage }) => {
                     <div className={`d-flex align-items-center ${msg.sender === 'user' ? 'justify-content-end' : ''} mb-1`}>
                       {msg.sender === 'bot' && <p className="fs-14 mb-0">Bot</p>}
                       <i className="ti ti-point-filled mx-1 text-light" />
-                      <span className="d-flex align-items-center fs-14">
-                        {msg.time}
-                        {msg.sender === 'user' && <i className="ti ti-checks text-success ms-2" />}
-                      </span>
+                      {/* Show time only for actual messages, not for loading placeholder */}
+                      {msg.time && (
+                        <span className="d-flex align-items-center fs-14">
+                          {msg.time}
+                          {msg.sender === 'user' && <i className="ti ti-checks text-success ms-2" />}
+                        </span>
+                      )}
                     </div>
                     <div className="position-relative">
                       <div className={`${msg.sender === 'user' ? 'sent-message' : 'received-message'}`}>
@@ -75,6 +93,36 @@ const ChatWindow = ({ messages, onSendMessage }) => {
                 </div>
               </li>
             ))}
+            {/* Show loading dots as a placeholder for the bot's response */}
+            {loading && (
+              <li className="media received d-flex align-items-end">
+                <div className="avatar avatar-lg flex-shrink-0">
+                  <img
+                    src="https://placehold.co/150x150"
+                    alt="Bot Avatar"
+                    className="rounded-circle"
+                  />
+                </div>
+                <div className="media-body flex-grow-1">
+                  <div className="msg-box">
+                    <div className="d-flex align-items-center mb-1">
+                      <p className="fs-14 mb-0">Bot</p>
+                      <i className="ti ti-point-filled mx-1 text-light" />
+                      {/* No time shown for loading placeholder */}
+                    </div>
+                    <div className="position-relative">
+                      <div className="received-message">
+                        <div className="loading-dots">
+                          <span>.</span>
+                          <span>.</span>
+                          <span>.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            )}
           </ul>
         </div>
         <div className="card-footer">
@@ -87,9 +135,19 @@ const ChatWindow = ({ messages, onSendMessage }) => {
               placeholder="Type Your Message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' && !loading) {
+                  handleSendMessage();
+                }
+              }}
+              disabled={loading} // Disable input while loading
             />
             <div className="send-action">
-              <button className="btn btn-primary btn_send" onClick={handleSendMessage}>
+              <button
+                className="btn btn-primary btn_send"
+                onClick={handleSendMessage}
+                disabled={loading} // Disable button while loading
+              >
                 <i className="bi bi-send fs-16 " aria-hidden="true" />
               </button>
             </div>
