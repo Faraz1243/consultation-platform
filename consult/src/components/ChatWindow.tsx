@@ -1,16 +1,9 @@
-import React from 'react';
-import './ChatWindow.css'; // Import the CSS file
+import React from "react";
+import "./ChatWindow.css"; // Import the CSS file
 
 const ChatWindow = ({ messages, onSendMessage, onBack, loading }) => {
-  const [message, setMessage] = React.useState('');
+  const [message, setMessage] = React.useState("");
   const chatContainerRef = React.useRef(null);
-
-  // Function to scroll to the bottom of the chat container
-  const scrollToBottom = () => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  };
 
   // Automatically scroll to the bottom whenever messages or loading state changes
   React.useEffect(() => {
@@ -20,7 +13,14 @@ const ChatWindow = ({ messages, onSendMessage, onBack, loading }) => {
   const handleSendMessage = () => {
     if (message.trim() && !loading) {
       onSendMessage(message);
-      setMessage('');
+      setMessage("");
+    }
+  };
+  // Function to scroll to the bottom of the chat container
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   };
 
@@ -58,11 +58,19 @@ const ChatWindow = ({ messages, onSendMessage, onBack, loading }) => {
             </a>
           </div>
         </div>
-        <div className="card-body msg_card_body chat-scroll pt-0" ref={chatContainerRef}>
+        <div
+          className="card-body msg_card_body chat-scroll pt-0"
+          ref={chatContainerRef}
+        >
           <ul className="list-unstyled">
             {messages.map((msg, index) => (
-              <li key={index} className={`media ${msg.sender === 'user' ? 'sent' : 'received'} d-flex align-items-end`}>
-                {msg.sender === 'bot' && (
+              <li
+                key={index}
+                className={`media ${
+                  msg.sender === "user" ? "sent" : "received"
+                } d-flex align-items-end`}
+              >
+                {msg.sender === "bot" && (
                   <div className="avatar avatar-lg flex-shrink-0">
                     <img
                       src="https://placehold.co/150x150"
@@ -73,19 +81,33 @@ const ChatWindow = ({ messages, onSendMessage, onBack, loading }) => {
                 )}
                 <div className="media-body flex-grow-1">
                   <div className="msg-box">
-                    <div className={`d-flex align-items-center ${msg.sender === 'user' ? 'justify-content-end' : ''} mb-1`}>
-                      {msg.sender === 'bot' && <p className="fs-14 mb-0">Bot</p>}
+                    <div
+                      className={`d-flex align-items-center ${
+                        msg.sender === "user" ? "justify-content-end" : ""
+                      } mb-1`}
+                    >
+                      {msg.sender === "bot" && (
+                        <p className="fs-14 mb-0">Bot</p>
+                      )}
                       <i className="ti ti-point-filled mx-1 text-light" />
                       {/* Show time only for actual messages, not for loading placeholder */}
                       {msg.time && (
                         <span className="d-flex align-items-center fs-14">
                           {msg.time}
-                          {msg.sender === 'user' && <i className="ti ti-checks text-success ms-2" />}
+                          {msg.sender === "user" && (
+                            <i className="ti ti-checks text-success ms-2" />
+                          )}
                         </span>
                       )}
                     </div>
                     <div className="position-relative">
-                      <div className={`${msg.sender === 'user' ? 'sent-message' : 'received-message'}`}>
+                      <div
+                        className={`${
+                          msg.sender === "user"
+                            ? "sent-message"
+                            : "received-message"
+                        }`}
+                      >
                         <p className="fs-14">{msg.text}</p>
                       </div>
                     </div>
@@ -136,7 +158,7 @@ const ChatWindow = ({ messages, onSendMessage, onBack, loading }) => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={(e) => {
-                if (e.key === 'Enter' && !loading) {
+                if (e.key === "Enter" && !loading) {
                   handleSendMessage();
                 }
               }}
