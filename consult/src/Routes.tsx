@@ -23,16 +23,20 @@ import ConsultantHolidays from './pages/ConsultantDashboard/Holidays'
 import ConsultantReviews from './pages/ConsultantDashboard/Reviews'
 import ConsultantEarnings from './pages/ConsultantDashboard/Earnings'
 import ConsultantSettings from './pages/ConsultantDashboard/Settings'
+
 import BookingDetails from './pages/ConsultantDashboard/Booking-Details'
 
 
 
+
 const routes =  
+
   [    
     {
       path:"/consultant/dashboard",
       element:<ConsultantDashboard/>
     },
+
     {
       path:"/consultant/bookings",
       element:<ConsultantBookings/>
@@ -53,6 +57,7 @@ const routes =
       path:"/consultant/earnings",
       element:<ConsultantEarnings/>
     },
+    
     {
       path:"/consultant/settings",
       element:<ConsultantSettings/>
@@ -61,9 +66,6 @@ const routes =
       path:"/consultant/booking-details",
       element:<BookingDetails/>
     },
-
-
-
 
 
     

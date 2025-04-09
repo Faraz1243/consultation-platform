@@ -4,7 +4,8 @@ export class TinyFooter extends Component {
   render() {
     return (
         <>
-            {/* Footer */}
+            {/* tINY Footer */}
+
             <div className="footer-copyright  bg-transparent">
                 <div className="container">
                 <div className="row">

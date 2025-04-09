@@ -5,6 +5,7 @@ export class TinyHeader extends Component {
   render() {
     return (
         <>
+        {/*  Tiny Header */}
         <div className="authentication-header">
           <div className="container">
             <div className="col-md-12">
@@ -14,6 +15,7 @@ export class TinyHeader extends Component {
             </div>
           </div>
         </div>
+        
         {/* /Header */}
       </>
       
